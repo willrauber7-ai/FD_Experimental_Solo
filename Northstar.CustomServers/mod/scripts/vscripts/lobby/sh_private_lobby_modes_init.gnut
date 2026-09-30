@@ -1,0 +1,82 @@
+global function PrivateMatchModesInit
+
+void function PrivateMatchModesInit()
+{
+	// match settings
+	// super temp: do localisation strings later
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_MATCH", "classic_mp", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "1" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_MATCH", "run_epilogue", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "1" )
+	AddPrivateMatchModeSettingArbitrary( "#MODE_SETTING_CATEGORY_MATCH", "scorelimit", "5" ) // , "Score Limit" )
+	AddPrivateMatchModeSettingArbitrary( "#MODE_SETTING_CATEGORY_MATCH", "roundscorelimit", "0" ) // , "Score Limit (round-based modes)" )
+	AddPrivateMatchModeSettingArbitrary( "#MODE_SETTING_CATEGORY_MATCH", "timelimit", "12" ) // , "Time Limit" )
+	AddPrivateMatchModeSettingArbitrary( "#MODE_SETTING_CATEGORY_MATCH", "roundtimelimit", "0" ) // , "Time Limit (round-based modes)" )
+	AddPrivateMatchModeSettingArbitrary( "#MODE_SETTING_CATEGORY_MATCH", "respawnprotection", "0.0" ) // , "Player Respawn Protection Time" )
+
+	AddPrivateMatchModeSettingArbitrary( "#MODE_SETTING_CATEGORY_PILOT", "pilot_health_multiplier", "1.0" )
+	AddPrivateMatchModeSettingArbitrary( "#MODE_SETTING_CATEGORY_PILOT", "respawn_delay", "0.0" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_PILOT", "boosts_enabled", [ "#SETTING_DEFAULT", "#SETTING_DISABLED" ], "1" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_PILOT", "earn_meter_pilot_overdrive", [ "#SETTING_DISABLED", "#SETTING_ENABLED", "Only" ], "1" )
+	AddPrivateMatchModeSettingArbitrary( "#MODE_SETTING_CATEGORY_PILOT", "earn_meter_pilot_multiplier", "1.0" )
+	AddPrivateMatchModeSettingArbitrary( "#MODE_SETTING_CATEGORY_PILOT", "player_force_respawn", "5" )
+
+	AddPrivateMatchModeSettingArbitrary( "#MODE_SETTING_CATEGORY_TITAN", "earn_meter_titan_multiplier", "1.0" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_TITAN", "aegis_upgrades", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_TITAN", "infinite_doomed_state", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_TITAN", "titan_shield_regen", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0" )
+
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_RIFF", "riff_floorislava", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_RIFF", "featured_mode_all_holopilot", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_RIFF", "featured_mode_all_grapple", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_RIFF", "featured_mode_all_phase", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_RIFF", "featured_mode_all_ticks", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_RIFF", "featured_mode_tactikill", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_RIFF", "featured_mode_amped_tacticals", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_RIFF", "featured_mode_rocket_arena", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_RIFF", "featured_mode_shotguns_snipers", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0" )
+	AddPrivateMatchModeSettingEnum( "#MODE_SETTING_CATEGORY_RIFF", "iron_rules", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0" )
+
+	// gamemode settings
+	AddPrivateMatchModeSettingEnum( "#GAMEMODE_cp", "cp_amped_capture_points", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "1" ) // would've been nice to use amped_capture_points, but this var is already used ingame and its value is default 0
+
+	AddPrivateMatchModeSettingEnum( "#GAMEMODE_coliseum", "coliseum_loadouts_enabled", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "1" )
+
+	AddPrivateMatchModeSettingEnum( "#PL_aitdm", "aitdm_archer_grunts", [ "Disabled", "Enabled" ], "0" )
+
+	foreach ( string playlist in [ "fd_easy", "fd_normal", "fd_hard", "fd_master", "fd_insane", "fd_livefire" ] )
+	{
+		string category = "#PL_" + playlist
+		AddPrivateMatchModeSettingEnum( category, "fd_allow_elite_titans", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0", "Elite Titans" )
+		AddPrivateMatchModeSettingEnum( category, "fd_allow_titanfall_block", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0", "Titanfall Block Events" )
+		AddPrivateMatchModeSettingEnum( category, "fd_arc_titans_uses_arc_cannon", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0", "Arc Titan Arc Cannons" )
+		AddPrivateMatchModeSettingEnum( category, "fd_campaign_shield_captains", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0", "Campaign Shield Captains" )
+		AddPrivateMatchModeSettingEnum( category, "fd_campaign_ticks", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0", "Campaign Tick Models" )
+		AddPrivateMatchModeSettingEnum( category, "fd_grunts_uses_grenades", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0", "Grunt Grenades" )
+		AddPrivateMatchModeSettingEnum( category, "fd_visible_drop_points", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0", "Enemy Titanfall Markers" )
+		AddPrivateMatchModeSettingEnum( category, "fd_smart_pistol_easy_mode", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0", "Easy Mode Smart Pistol" )
+		AddPrivateMatchModeSettingEnum( category, "fd_rodeo_highlight", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0", "Friendly Rodeo Highlight" )
+		AddPrivateMatchModeSettingEnum( category, "fd_minimap_ping_sound", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0", "Enemy Spawn Ping Sound" )
+		AddPrivateMatchModeSettingEnum( category, "fd_dropship_battery_drop", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0", "Dropship Battery Drops" )
+		AddPrivateMatchModeSettingEnum( category, "enable_rocket_turrets", [ "#SETTING_DISABLED", "#SETTING_ENABLED" ], "0", "Rocket Sentry Turrets" )
+		AddPrivateMatchModeSettingEnum( category, "fd_grunt_at_weapon_users", [ "0", "1", "2", "3", "4" ], "0", "Anti-Titan Grunts Per Squad" )
+		AddPrivateMatchModeSettingEnum( category, "fd_grunt_shield_captains", [ "0", "1", "2", "3", "4" ], "0", "Shield Captains Per Squad" )
+		AddPrivateMatchModeSettingArbitrary( category, "fd_wave_buy_time", "60", "Wave Buy Time" )
+	}
+
+	// modes
+	AddPrivateMatchMode( "ffa" )
+	AddPrivateMatchMode( "fra" )
+	AddPrivateMatchMode( "coliseum" )
+
+	// playlists
+	AddPrivateMatchMode( "attdm" )
+	AddPrivateMatchMode( "turbo_ttdm" )
+	AddPrivateMatchMode( "alts" )
+	AddPrivateMatchMode( "turbo_lts" )
+	AddPrivateMatchMode( "rocket_lf" )
+	AddPrivateMatchMode( "holopilot_lf" )
+	AddPrivateMatchMode( "fd_livefire" )
+
+	// maps
+	AddPrivateMatchMap( "mp_coliseum" )
+	AddPrivateMatchMap( "mp_coliseum_column" )
+}

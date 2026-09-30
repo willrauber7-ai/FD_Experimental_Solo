@@ -1,0 +1,632 @@
+resource/ui/menus/modlist.menu
+{
+	menu
+	{
+		ControlName Frame
+		xpos 0
+		ypos 0
+		zpos 3
+		wide f0
+		tall f0
+		autoResize 0
+		visible 1
+		enabled 1
+		pinCorner 0
+		PaintBackgroundType 0
+		infocus_bgcolor_override "0 0 0 0"
+		outoffocus_bgcolor_override "0 0 0 0"
+
+		Vignette
+		{
+			ControlName ImagePanel
+			InheritProperties MenuVignette
+		}
+
+		Title
+		{
+			ControlName Label
+			InheritProperties MenuTitle
+			labelText "#MENU_TITLE_MODS"
+		}
+
+		BtnSearchLabel
+		{
+			ControlName RuiButton
+			InheritProperties RuiSmallButton
+			classname FilterPanelChild
+			xpos 1178
+			ypos 792
+			wide 500
+			tall 36
+			labelText "#SEARCHBAR_LABEL"
+			textAlignment west
+			visible 1
+		}
+
+		BtnModsSearch
+		{
+			ControlName TextEntry
+			classname FilterPanelChild
+			xpos 1278
+			ypos 795
+			wide 380
+			tall 30
+			zpos 100
+			textHidden 0
+			editable 1
+			font Default_21
+			allowRightClickMenu 0
+			allowSpecialCharacters 0
+			unicode 1
+			navUp DetailsPreviewFocus
+			navDown SwtBtnShowFilter
+		}
+
+		SwtBtnShowFilter
+		{
+			ControlName RuiButton
+			InheritProperties SwitchButton
+			classname FilterPanelChild
+			xpos 1178
+			ypos 832
+			wide 500
+			tall 36
+			labelText "#SHOW"
+			ConVar "filter_mods"
+			list
+			{
+				"#SHOW_ALL" 0
+				"#SHOW_ONLY_ENABLED" 1
+				"#SHOW_ONLY_DISABLED" 2
+				"#SHOW_ONLY_NOT_REQUIRED" 3
+				"#SHOW_ONLY_REQUIRED" 4
+				"#SHOW_ONLY_REMOTE" 5
+			}
+			navUp BtnModsSearch
+			navDown BtnListReverse
+		}
+
+		BtnListReverse
+		{
+			ControlName RuiButton
+			InheritProperties SwitchButton
+			classname FilterPanelChild
+			xpos 1178
+			ypos 872
+			wide 500
+			tall 36
+			labelText "#MODS_REVERSE"
+			ConVar "modlist_reverse"
+			list
+			{
+				"#LOW_PRIORITY" 0
+				"#HIGH_PRIORITY" 1
+			}
+			navUp SwtBtnShowFilter
+			navDown BtnPriorityHeaders
+		}
+
+		BtnPriorityHeaders
+		{
+			ControlName RuiButton
+			InheritProperties SwitchButton
+			classname FilterPanelChild
+			xpos 1178
+			ypos 912
+			wide 500
+			tall 36
+			labelText "#MODS_PRIORITY_HEADERS"
+			ConVar "modlist_show_priority_headers"
+			list
+			{
+				"#SWITCH_NO" 0
+				"#SWITCH_YES" 1
+			}
+			navUp BtnListReverse
+			navDown BtnFiltersClear
+		}
+
+		BtnFiltersClear
+		{
+			ControlName RuiButton
+			InheritProperties RuiSmallButton
+			classname FilterPanelChild
+			xpos 1178
+			ypos 952
+			wide 500
+			tall 36
+			labelText "#CLEAR_FILTERS_LONG"
+			textAlignment center
+			navUp BtnPriorityHeaders
+			navDown BtnPriorityHeaders
+		}
+
+
+		PriorityHeader1
+		{
+			ControlName Label
+			classname PriorityHeader
+			xpos 80
+			ypos 180
+			wide 1066
+			tall 28
+			labelText ""
+			font Default_18
+			allcaps 1
+			fgcolor_override "218 226 234 255"
+			bgcolor_override "20 27 34 220"
+			paintbackground 1
+			visible 0
+			zpos 30
+		}
+
+		PriorityHeader2
+		{
+			ControlName Label
+			classname PriorityHeader
+			xpos 80
+			ypos 390
+			wide 1066
+			tall 28
+			labelText ""
+			font Default_18
+			allcaps 1
+			fgcolor_override "218 226 234 255"
+			bgcolor_override "20 27 34 220"
+			paintbackground 1
+			visible 0
+			zpos 30
+		}
+
+		PriorityHeader3
+		{
+			ControlName Label
+			classname PriorityHeader
+			xpos 80
+			ypos 600
+			wide 1066
+			tall 28
+			labelText ""
+			font Default_18
+			allcaps 1
+			fgcolor_override "218 226 234 255"
+			bgcolor_override "20 27 34 220"
+			paintbackground 1
+			visible 0
+			zpos 30
+		}
+
+		Panel1
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 1
+			xpos 80
+			ypos 210
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel2
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 2
+			xpos 258
+			ypos 210
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel3
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 3
+			xpos 436
+			ypos 210
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel4
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 4
+			xpos 614
+			ypos 210
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel5
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 5
+			xpos 792
+			ypos 210
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel6
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 6
+			xpos 970
+			ypos 210
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel7
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 7
+			xpos 80
+			ypos 420
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel8
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 8
+			xpos 258
+			ypos 420
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel9
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 9
+			xpos 436
+			ypos 420
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel10
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 10
+			xpos 614
+			ypos 420
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel11
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 11
+			xpos 792
+			ypos 420
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel12
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 12
+			xpos 970
+			ypos 420
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel13
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 13
+			xpos 80
+			ypos 630
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel14
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 14
+			xpos 258
+			ypos 630
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel15
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 15
+			xpos 436
+			ypos 630
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel16
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 16
+			xpos 614
+			ypos 630
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel17
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 17
+			xpos 792
+			ypos 630
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		Panel18
+		{
+			ControlName CNestedPanel
+			classname ModSelectorPanel
+			scriptID 18
+			xpos 970
+			ypos 630
+			wide 176
+			tall 176
+			visible 0
+			controlSettingsFile "resource/ui/menus/panels/modlist_settings.res"
+		}
+
+		EmptyLabel
+		{
+			ControlName Label
+			xpos 80
+			ypos 448
+			wide 1066
+			tall 80
+			labelText "#NO_RESULTS"
+			font Default_28
+			textAlignment center
+			fgcolor_override "210 220 230 255"
+			visible 0
+			zpos 30
+		}
+
+
+		PageLabel
+		{
+			ControlName Label
+			xpos 202
+			ypos 811
+			wide 822
+			tall 26
+			labelText ""
+			font Default_18
+			textAlignment center
+			fgcolor_override "176 185 194 255"
+			visible 1
+			zpos 2
+		}
+
+
+		DetailsBackground
+		{
+			ControlName RuiPanel
+			classname ModDetailsPane
+			xpos 1178
+			ypos 190
+			wide 500
+			tall 590
+			rui "ui/knowledgebase_panel.rpak"
+			visible 0
+			zpos 0
+		}
+
+		DetailsPreviewFocus
+		{
+			ControlName RuiButton
+			classname ModDetailsPane
+			xpos 1178
+			ypos 190
+			wide 500
+			tall 590
+			labelText ""
+			visible 0
+			zpos 10
+			navDown BtnModsSearch
+		}
+
+		DetailsImage
+		{
+			ControlName RuiPanel
+			classname ModDetailsPane
+			xpos 1218
+			ypos 238
+			wide 420
+			tall 260
+			visible 0
+			scaleImage 1
+			rui "ui/basic_image.rpak"
+			zpos 2
+		}
+
+		DetailsSourceBadge
+		{
+			ControlName RuiPanel
+			xpos 1228
+			ypos 464
+			wide 24
+			tall 24
+			visible 0
+			scaleImage 1
+			rui "ui/basic_image.rpak"
+			zpos 8
+		}
+
+		DetailsName
+		{
+			ControlName Label
+			classname ModDetailsPane
+			xpos 1198
+			ypos 506
+			wide 460
+			tall 30
+			visible 0
+			labelText ""
+			font Default_21
+			fgcolor_override "255 255 255 255"
+			zpos 2
+		}
+
+		DetailsAuthor
+		{
+			ControlName Label
+			classname ModDetailsPane
+			xpos 1198
+			ypos 536
+			wide 460
+			tall 20
+			visible 0
+			labelText ""
+			font Default_16
+			fgcolor_override "176 185 194 255"
+			zpos 2
+		}
+
+		DetailsDescription
+		{
+			ControlName Label
+			classname ModDetailsPane
+			xpos 1198
+			ypos 560
+			wide 460
+			tall 80
+			visible 0
+			labelText ""
+			font Default_16
+			wrap 1
+			fgcolor_override "225 230 235 255"
+			zpos 2
+		}
+
+		DetailsStatus
+		{
+			ControlName Label
+			classname ModDetailsPane
+			xpos 1198
+			ypos 644
+			wide 460
+			tall 20
+			visible 0
+			labelText ""
+			font Default_16
+			fgcolor_override "137 180 202 255"
+			zpos 2
+		}
+
+		ModEnabledBar
+		{
+			ControlName RuiPanel
+			classname ModDetailsPane
+			xpos 1178
+			ypos 190
+			wide 500
+			tall 7
+			rui "ui/basic_image.rpak"
+			visible 0
+			zpos 3
+		}
+
+		WarningLegendImage
+		{
+			ControlName RuiPanel
+			classname ModDetailsPane
+			xpos 1198
+			ypos 668
+			wide 28
+			tall 28
+			rui "ui/basic_image.rpak"
+			scaleImage 1
+			visible 0
+			zpos 3
+		}
+
+		WarningLegendLabel
+		{
+			ControlName Label
+			classname ModDetailsPane
+			xpos 1234
+			ypos 662
+			wide 424
+			tall 38
+			labelText "#MOD_REQUIRED_WARNING"
+			font Default_16
+			wrap 1
+			fgcolor_override "176 185 194 255"
+			visible 0
+			zpos 3
+		}
+
+
+
+
+		FooterButtons
+		{
+			ControlName CNestedPanel
+			InheritProperties FooterButtons
+		}
+	}
+}
