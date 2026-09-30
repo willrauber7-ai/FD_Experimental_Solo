@@ -1,0 +1,201 @@
+global function NSUICodeCallback_ConnectionCallbacksInit
+global function NSUICodeCallback_ConnectionStarted
+global function NSUICodeCallback_ConnectionStopped
+global function NSUICodeCallback_ConnectionMessage
+global function NSUICodeCallback_DownloadingModsStarted
+global function NSUICodeCallback_DownloadingModsStopped
+global function NSUICodeCallback_ConfirmDownloadMods
+global function ConnectionDialog_Think
+
+struct {
+    bool running = false
+    string message = ""
+    bool active = false
+    string error = ""
+    bool failed = false
+    bool downloading = false
+    int serverModCount = 0
+    string serverModDownloadName = ""
+} file
+
+const int MB = 1024*1000;
+
+void function NSUICodeCallback_ConnectionCallbacksInit()
+{
+    RegisterSignal( "NSConnectionStarted" )
+    RegisterSignal( "NSConnectionFinished" )
+    RegisterSignal( "NSConnectionFailed" )
+    RegisterSignal( "NSConnectionStartDialog" )
+    RegisterSignal( "NSModsDownloadStarted" )
+    RegisterSignal( "NSModsRequestConfirmation" )
+}
+
+void function NSUICodeCallback_ConnectionStarted(bool scriptManaged)
+{
+    file.message = ""
+    file.active = true
+    file.error = ""
+    file.failed = false
+    file.downloading = false
+    file.serverModCount = 0
+    file.serverModDownloadName = ""
+
+    Signal( uiGlobal.signalDummy, "NSConnectionStarted" )
+
+    if (scriptManaged)
+        Signal( uiGlobal.signalDummy, "NSConnectionStartDialog" )
+}
+
+void function NSUICodeCallback_ConnectionMessage(string message)
+{
+    file.message = message
+}
+
+void function NSUICodeCallback_ConnectionStopped(string error)
+{
+    if (error != "")
+    {
+        file.failed = true
+        file.error = error
+        Signal( uiGlobal.signalDummy, "NSConnectionFailed" )
+    }
+    else
+    {
+        Signal( uiGlobal.signalDummy, "NSConnectionFinished" )
+    }
+
+    file.active = false
+}
+
+void function NSUICodeCallback_DownloadingModsStarted()
+{
+    file.downloading = true
+    Signal( uiGlobal.signalDummy, "NSModsDownloadStarted" )
+}
+
+void function NSUICodeCallback_DownloadingModsStopped()
+{
+    file.downloading = false
+}
+
+void function NSUICodeCallback_ConfirmDownloadMods(int modCount, string serverName)
+{
+    file.serverModCount = 1
+    file.serverModDownloadName = serverName
+    Signal( uiGlobal.signalDummy, "NSModsRequestConfirmation" )
+}
+
+void function OpenErrorDialog( string errorDetails )
+{
+	DialogData dialogData
+	dialogData.header = "#ERROR"
+	dialogData.message = errorDetails
+	dialogData.image = $"ui/menu/common/dialog_error"
+
+#if PC_PROG
+	AddDialogButton( dialogData, "#DISMISS" )
+
+	AddDialogFooter( dialogData, "#A_BUTTON_SELECT" )
+#endif // PC_PROG
+	AddDialogFooter( dialogData, "#B_BUTTON_DISMISS_RUI" )
+
+	OpenDialog( dialogData )
+}
+
+void function ShowModDownloadConfirmationDialog()
+{
+    DialogData dialogData
+    dialogData.header = "#DIALOG_SERVERMODDL_HEADER"
+    dialogData.message = Localize( "#DIALOG_SERVERMODDL_MSG", file.serverModDownloadName, string( file.serverModCount ) )
+    dialogData.image = $"ui/menu/common/dialog_error"
+    dialogData.forceChoice = true
+
+    AddDialogButton( dialogData, Localize("#YES"), void function() { NSDecideModDownload(true); ConnectionRunning_Think() } )
+    AddDialogButton( dialogData, Localize("#CANCEL"), void function() { NSDecideModDownload(false) } )
+
+    OpenDialog( dialogData )
+}
+
+void function ConnectionDialog_Think()
+{
+    if(file.running)
+        return
+
+    file.running = true
+
+    for(;;)
+    {
+        WaitSignal( uiGlobal.signalDummy, "NSConnectionStartDialog" )
+        thread ConnectionRunning_Think()
+    }
+}
+
+void function ConnectionRunning_Think()
+{
+    EndSignal( uiGlobal.signalDummy, "NSConnectionStarted" )
+    EndSignal( uiGlobal.signalDummy, "NSConnectionFailed" )
+    EndSignal( uiGlobal.signalDummy, "NSConnectionFinished" )
+    EndSignal( uiGlobal.signalDummy, "NSModsRequestConfirmation" )
+
+    OnThreadEnd(
+        function() : ()
+        {
+            if( file.failed )
+                OpenErrorDialog( file.error )
+            else if( file.serverModCount > 0 )
+                ShowModDownloadConfirmationDialog()
+            else
+                CloseAllDialogs()
+        }
+    )
+
+    DialogData dialogData
+    dialogData.header = "#MATCHMAKING_TITLE_CONNECTING"
+    dialogData.message = file.message
+    dialogData.showSpinner = true
+    dialogData.forceChoice = true
+    AddDialogButton( dialogData, Localize("#CANCEL"), NSCancelConnection )
+    OpenDialog( dialogData )
+
+	var menu = GetMenu( "Dialog" )
+	var header = Hud_GetChild( menu, "DialogHeader" )
+	var body = GetSingleElementByClassname( menu, "DialogMessageClass" )
+
+    for(;;)
+    {
+        if(file.active)
+        {
+            if(file.downloading)
+            {
+                ModInstallState state = NSGetModInstallState()
+
+                switch( state.status )
+                {
+	                case eModInstallStatus.DOWNLOADING:
+	                	Hud_SetText( header, Localize( "#DOWNLOADING_MOD_TITLE_W_PROGRESS", string( state.ratio ) ) )
+	                	Hud_SetText( body, Localize( "#DOWNLOADING_MOD_TEXT_W_PROGRESS", state.name, state.version, floor( state.progress / MB ), floor( state.total / MB ) ) )
+	                	break
+	                case eModInstallStatus.CHECKSUMING:
+	                	Hud_SetText( header, Localize( "#CHECKSUMING_TITLE" ) )
+	                	Hud_SetText( body, Localize( "#CHECKSUMING_TEXT", state.name, state.version ) )
+	                	break
+	                case eModInstallStatus.EXTRACTING:
+	                	Hud_SetText( header, Localize( "#EXTRACTING_MOD_TITLE", string( state.ratio ) ) )
+	                	Hud_SetText( body, Localize( "#EXTRACTING_MOD_TEXT", state.name, state.version, floor( state.progress / MB ), floor( state.total / MB ) ) )
+	                	break
+                    default:
+                        Hud_SetText( header, Localize( "#DOWNLOADING_MOD_TITLE" ) )
+                        Hud_SetText( body, Localize( "#DOWNLOADING_MOD_TEXT", state.name, state.version ) )
+                        break
+                }
+            }
+            else
+            {
+                Hud_SetText( header, Localize( "#MATCHMAKING_TITLE_CONNECTING" ) )
+                Hud_SetText( body, file.message )
+            }
+        }
+
+        WaitFrame()
+    }
+}
